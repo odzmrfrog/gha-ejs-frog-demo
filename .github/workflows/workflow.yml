@@ -1,4 +1,4 @@
-name: "github-ejs-build"
+name: "ohadz-gha-ejs-build"
 on: 
   schedule:
     - cron: "0 0 * * *"  
@@ -7,8 +7,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKER_REPO: 'dro-oci-dev-local'
-      IMAGE_NAME: 'ejs-demo:${{ github.run_number }}'
+      DOCKER_REPO: 'ohadz-test-docker'
+      IMAGE_NAME: 'ohadz-gha-ejs-demo:${{ github.run_number }}'
     permissions:
       id-token: write
       contents: read
@@ -39,11 +39,11 @@ jobs:
           JF_URL: https://${{ vars.JF_HOST }}/
           JF_PROJECT: ${{ vars.JF_PROJECT_KEY }}
         with:
-            oidc-provider-name: davidro-github-integration
-            oidc-audience: davidro-github
+            oidc-provider-name: ohadz-gh
+            oidc-audience: test-aud
       - name: NPM Audit 
         env:
-          JFROG_CLI_BUILD_NAME: 'gh-ejs-demo'
+          JFROG_CLI_BUILD_NAME: 'ohadz-gha-ejs-demo'
           JF_URL: https://${{ vars.JF_HOST }}/
           JF_HOST: ${{ vars.JF_HOST }}
           JF_PROJECT: ${{ vars.JF_PROJECT_KEY }}
@@ -79,7 +79,7 @@ jobs:
         # adding the built docker into the JFrog build info
       - name: add docker package to build
         env:
-          JFROG_CLI_BUILD_NAME: 'gh-ejs-demo'
+          JFROG_CLI_BUILD_NAME: 'ohadz-gha-ejs-demo'
           JF_URL: https://${{ vars.JF_HOST }}/
           JF_PROJECT: ${{ vars.JF_PROJECT_KEY }}
         run: |
@@ -96,7 +96,7 @@ jobs:
       - name: Publish build info & scan build
         id: publish-build  
         env:
-          JFROG_CLI_BUILD_NAME: 'gh-ejs-demo'
+          JFROG_CLI_BUILD_NAME: 'ohadz-gha-ejs-demo'
           JF_URL: https://${{ vars.JF_HOST }}/
           JF_PROJECT: ${{ vars.JF_PROJECT_KEY }}
         run: |
